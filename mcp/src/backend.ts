@@ -259,17 +259,21 @@ export class OpenCodeBackend implements Backend {
   }
 
   async listModels(bin: string, provider?: string): Promise<string[]> {
-    const args = provider ? ["models", provider] : ["models"];
+    // OpenCode 2.x dropped the positional provider filter
+    // ("Unexpected positional argument"), so list everything and filter here.
+    const v2 = (await this.majorVersion(bin)) >= 2;
+    const args = provider && !v2 ? ["models", provider] : ["models"];
     const res = await runProcess(bin, args, { timeoutMs: 60_000 });
     if (res.code !== 0) {
       throw new Error(
         `'${bin} models' failed (exit ${res.code}): ${res.stderr.trim() || "unknown error"}`,
       );
     }
-    return res.stdout
+    const ids = res.stdout
       .split("\n")
       .map((l) => l.trim())
       .filter((l) => l.length > 0 && l.includes("/"));
+    return provider && v2 ? ids.filter((id) => id.startsWith(`${provider}/`)) : ids;
   }
 
   private buildArgs(req: DelegateRequest, major: number): string[] {
