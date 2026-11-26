@@ -1,0 +1,15 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+scratch/
+*.tmp
+
+# Accidental local OpenCode / auth leftovers
+auth.json
+**/auth.json
+__pycache__/
+*.pyc
