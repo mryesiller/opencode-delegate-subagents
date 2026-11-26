@@ -1,7 +1,7 @@
 ---
 description: Writes and runs tests for a well-specified scope. Prefer this for new tests, fixtures, and making a failing test suite pass without redesigning production code.
 mode: subagent
-model: zai/glm-5.3
+model: zai-coding-plan/glm-5.3
 color: "#22c55e"
 steps: 20
 permissions:

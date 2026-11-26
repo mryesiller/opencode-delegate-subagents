@@ -3,7 +3,7 @@
  */
 
 export const SERVER_NAME = "opencode-delegate-mcp";
-export const SERVER_VERSION = "0.3.0";
+export const SERVER_VERSION = "0.3.1";
 
 /** Maximum size (characters) of a tool text response before truncation. */
 export const CHARACTER_LIMIT = 30_000;
@@ -13,3 +13,6 @@ export const DEFAULT_TIMEOUT_MS = 600_000;
 
 /** Default OpenCode binary name (resolved from PATH unless overridden in config). */
 export const DEFAULT_OPENCODE_BIN = "opencode";
+
+/** Default provider/model when a delegation omits one and no config is set. */
+export const DEFAULT_MODEL = "zai-coding-plan/glm-5.3";

@@ -75,22 +75,22 @@ Default routing (verified in the OpenCode 2.4.2 `opencode models` catalog on 202
 | Subagent | Default model | Why |
 | --- | --- | --- |
 | `explorer` | `opencode/mimo-v2.6-flash-free` | Free OpenCode model, good enough for code maps, no paid key required once the OpenCode provider is available |
-| `tester` | `zai/glm-5.3` | Strong, cheaper coder for writing and running tests |
-| `refactorer` | `zai/glm-5.3` | Same: mechanical edits need a solid coding model |
+| `tester` | `zai-coding-plan/glm-5.3` | Strong, cheaper coder for writing and running tests |
+| `refactorer` | `zai-coding-plan/glm-5.3` | Same: mechanical edits need a solid coding model |
 | `researcher` | `opencode/deepseek-v4.1-flash-free` | Free OpenCode model, solid at gathering and summarizing sources |
 | `log-analyzer` | `nvidia/z-ai/glm-5.3-flash` | Free on NVIDIA NIM in the current catalog, long context for bulky logs |
-| `reviewer` | `zai/glm-5.3` | Review needs better judgment than a flash/free model; still much cheaper than a frontier parent |
+| `reviewer` | `zai-coding-plan/glm-5.3` | Review needs better judgment than a flash/free model; still much cheaper than a frontier parent |
 
 Notes:
 
-- `zai/glm-5.3` is the real Z.AI catalog id (not a typo). If you subscribe to the Z.AI Coding Plan, `opencode auth login` and consider `zai-coding-plan/glm-5.3` instead.
-- `opencode/glm-5.3-flash-free` and `nvidia/z-ai/glm-5.3` (non-flash) appear on some models.dev snapshots but were **not** in the OpenCode 2.4.2 catalog; this repo does not use them as defaults.
-- After connecting OpenRouter, run `opencode models` and you can point any agent at an OpenRouter id. Keys are referenced only as `{env:ZAI_API_KEY}`, `{env:NVIDIA_API_KEY}`, `{env:OPENROUTER_API_KEY}` — never put a real key in git or in chat.
+- `zai-coding-plan/glm-5.3` is the verified Z.AI **Coding Plan** id (models.dev and the OpenCode 2.4.2 catalog). Connect it with `opencode auth login` and choose **Z.AI Coding Plan**, or set `ZHIPU_API_KEY` (official env name; `ZAI_API_KEY` is also accepted as a fallback). The pay-per-token id `zai/glm-5.3` is a different provider and is not the default.
+- `opencode/glm-5.3-flash-free` and `nvidia/z-ai/glm-5.3` (non-flash) appear on some models.dev snapshots but were **not** listed by `opencode models` on OpenCode 2.4.2; this repo does not use them as defaults. `zai-coding-plan/*` models show in `opencode models` after the Coding Plan provider is connected.
+- After connecting OpenRouter, run `opencode models` and you can point any agent at an OpenRouter id. Keys are referenced only via env vars (`ZHIPU_API_KEY` / `ZAI_API_KEY`, `{env:NVIDIA_API_KEY}`, `{env:OPENROUTER_API_KEY}`) or `opencode auth` — never put a real key in git or in chat.
 - Sampling (`temperature`) is **not** set in agent frontmatter. OpenCode 2.x treats `temperature` / `tools` as legacy V1 fields and ignores them in V2 files. Use `permissions` instead of `tools`.
 
 ## Claude Code (Mac) and MCP
 
-Native subagents run **inside OpenCode**. Claude Code (and Codex) cannot launch these markdown agents directly. A minimal MCP server that shells out to `opencode run` lives under `mcp/` for that path. See `mcp/README.md`.
+Native subagents run **inside OpenCode**. Claude Code (and Codex) cannot launch these markdown agents directly. A maintained MCP server that shells out to `opencode run` (default model `zai-coding-plan/glm-5.3`) lives under `mcp/`. Setup, including the `claude mcp add` command, is in the README and `mcp/README.md`.
 
 ## omp role alignment (todo)
 

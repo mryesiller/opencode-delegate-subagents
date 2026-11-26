@@ -181,7 +181,7 @@ def check_secret_hygiene() -> None:
         if SECRET_VALUE.search(text):
             errors.append(f'{path.relative_to(ROOT)}: possible secret value (not printed)')
         if path.name == '.env.example' and re.search(
-            r'^(ZAI_API_KEY|NVIDIA_API_KEY|OPENROUTER_API_KEY)=.+$', text, re.M
+            r'^(ZHIPU_API_KEY|ZAI_API_KEY|NVIDIA_API_KEY|OPENROUTER_API_KEY)=.+$', text, re.M
         ):
             errors.append('.env.example must leave key values empty')
 

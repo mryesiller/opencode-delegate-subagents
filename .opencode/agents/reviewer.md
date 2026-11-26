@@ -1,7 +1,7 @@
 ---
 description: Read-only code reviewer. Reports correctness, regressions, security, and test gaps by severity with file:line references. Does not edit files.
 mode: subagent
-model: zai/glm-5.3
+model: zai-coding-plan/glm-5.3
 color: "#ef4444"
 steps: 12
 permissions:

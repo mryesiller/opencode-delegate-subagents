@@ -14,7 +14,7 @@ import { homedir } from "node:os";
 import { join } from "node:path";
 import { mkdirSync, readFileSync, writeFileSync, existsSync } from "node:fs";
 import { z } from "zod";
-import { DEFAULT_OPENCODE_BIN, DEFAULT_TIMEOUT_MS } from "./constants.js";
+import { DEFAULT_MODEL, DEFAULT_OPENCODE_BIN, DEFAULT_TIMEOUT_MS } from "./constants.js";
 
 /** A reusable named preset (e.g. "tests", "cheap") the caller can select. */
 export const ProfileSchema = z
@@ -36,7 +36,7 @@ export const ConfigSchema = z
     /** Path or name of the OpenCode binary. */
     opencodeBin: z.string().min(1).default(DEFAULT_OPENCODE_BIN),
     /** Default provider/model used when a delegation does not specify one. */
-    defaultModel: z.string().min(1).optional(),
+    defaultModel: z.string().min(1).default(DEFAULT_MODEL),
     /** Default OpenCode agent for delegations. */
     defaultAgent: z.string().min(1).optional(),
     /** Default reasoning-effort variant. */

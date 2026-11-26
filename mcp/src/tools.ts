@@ -203,7 +203,7 @@ Avoid for: architecture, security-sensitive logic, ambiguous specs, or anything 
 Args:
   - task (string, required — alias: \`scope\`, accepted for parity with delegate_tests; provide one): Complete instructions for the subagent, including acceptance criteria.
   - directory (string): Absolute path of the repo/dir to work in. Defaults to the server's cwd or config.default_directory.
-  - model (string): Override provider/model, e.g. "minimax-coding-plan/MiniMax-M2.5-highspeed". Defaults to config.default_model.
+  - model (string): Override provider/model, e.g. "zai-coding-plan/glm-5.3". Defaults to config.default_model.
   - agent (string): OpenCode agent name to run as.
   - variant (string): Reasoning-effort variant, e.g. "high" | "minimal".
   - profile (string): Named preset from config (model/agent/variant/auto_approve).
@@ -329,7 +329,7 @@ Returns the same structured content shape as delegate_task.`,
     "list_models",
     {
       title: "List available provider/model ids",
-      description: `List provider/model ids that OpenCode can use, in "provider/model" form (e.g. "minimax-coding-plan/MiniMax-M2.5-highspeed"). Optionally filter to a single provider. Use these ids for the \`model\` argument of delegate_task or as default_model in set_delegate_config.
+      description: `List provider/model ids that OpenCode can use, in "provider/model" form (e.g. "zai-coding-plan/glm-5.3"). Optionally filter to a single provider. Use these ids for the \`model\` argument of delegate_task or as default_model in set_delegate_config.
 
 Args:
   - provider (string): Optional provider id to filter by (e.g. "minimax-coding-plan", "openrouter").
@@ -414,7 +414,7 @@ Args:
       description: `Change the active delegation settings at runtime — this is how you dynamically switch the cheap model or provider without reinstalling. Only the fields you pass are updated. Returns the updated config.
 
 Args (all optional):
-  - default_model (string): provider/model used when a call omits one, e.g. "openrouter/minimax/minimax-m2.5".
+  - default_model (string): provider/model used when a call omits one, e.g. "zai-coding-plan/glm-5.3".
   - default_agent (string): default OpenCode agent.
   - default_variant (string): default reasoning-effort variant.
   - auto_approve (boolean): auto-approve tool permissions for delegations.

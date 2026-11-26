@@ -189,4 +189,4 @@ fi
 echo
 echo "Done. Restart OpenCode (or start a new session) so it picks up the agents."
 echo "Connect providers with:  opencode auth login"
-echo "Or set ZAI_API_KEY, NVIDIA_API_KEY, OPENROUTER_API_KEY (see .env.example)."
+echo "Or set ZHIPU_API_KEY (Coding Plan; ZAI_API_KEY also accepted), NVIDIA_API_KEY, OPENROUTER_API_KEY (see .env.example)."

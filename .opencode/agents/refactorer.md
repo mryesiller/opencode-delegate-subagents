@@ -1,7 +1,7 @@
 ---
 description: Mechanical refactors and repetitive multi-file edits (renames, moves, signature/prop propagation, import updates, lint/type fixes) that must not change behavior.
 mode: subagent
-model: zai/glm-5.3
+model: zai-coding-plan/glm-5.3
 color: "#f59e0b"
 steps: 20
 permissions:

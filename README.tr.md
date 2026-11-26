@@ -28,22 +28,22 @@ Kimlikler **OpenCode 2.4.2** `opencode models` kataloğu (26 Kasım 2026) ve [mo
 | Subagent | Model | Yazar mı? | Neden |
 | --- | --- | --- | --- |
 | `explorer` | `opencode/mimo-v2.6-flash-free` | hayır | Ücretsiz OpenCode modeli, kod haritası için yeterli |
-| `tester` | `zai/glm-5.3` | evet | Varsayılan Z.AI bayrak gemisi; sağlam, daha ucuz coder |
-| `refactorer` | `zai/glm-5.3` | evet | Aynı, mekanik çok dosyalı düzenlemeler için |
+| `tester` | `zai-coding-plan/glm-5.3` | evet | Z.AI Coding Plan bayrak gemisi; plan kotasında sağlam coder |
+| `refactorer` | `zai-coding-plan/glm-5.3` | evet | Aynı, mekanik çok dosyalı düzenlemeler için |
 | `researcher` | `opencode/deepseek-v4.1-flash-free` | hayır | Ücretsiz OpenCode modeli, kaynaklı özetlerde iyi |
 | `log-analyzer` | `nvidia/z-ai/glm-5.3-flash` | hayır | NVIDIA NIM, katalogda $0, uzun bağlam |
-| `reviewer` | `zai/glm-5.3` | hayır | Flash/ücretsizden daha iyi muhakeme; frontier ana modelden yine ucuz |
+| `reviewer` | `zai-coding-plan/glm-5.3` | hayır | Flash/ücretsizden daha iyi muhakeme; Coding Plan kotasında |
 
 Yönlendirmeyi değiştirmek için `.opencode/agents/<ad>.md` içindeki `model:` alanını düzenleyin.
 
-`zai/glm-5.3` gerçek sağlayıcı/model kimliğidir. Z.AI Coding Plan'iniz varsa `opencode auth login` ile girip `zai-coding-plan/glm-5.3` kullanmayı düşünün. models.dev bazı anlık görüntülerinde `opencode/glm-5.3-flash-free` ve `nvidia/z-ai/glm-5.3` (flash olmayan) görünüyor; bunlar OpenCode 2.4.2 kataloğunda **yoktu**, bu yüzden varsayılan değiller.
+`zai-coding-plan/glm-5.3` doğrulanmış Z.AI **Coding Plan** kimliğidir (models.dev ve OpenCode 2.4.2 kataloğu). `opencode auth login` ile **Z.AI Coding Plan** seçin veya `ZHIPU_API_KEY` verin (resmi env adı; `ZAI_API_KEY` yedek olarak da kabul edilir). Kullanıma göre ödenen `zai/glm-5.3` ayrı bir sağlayıcıdır. models.dev bazı anlık görüntülerinde `opencode/glm-5.3-flash-free` ve `nvidia/z-ai/glm-5.3` (flash olmayan) görünüyor; bunlar 2.4.2 `opencode models` listesinde **yoktu**, bu yüzden varsayılan değiller. Coding Plan modelleri, sağlayıcı bağlandıktan sonra `opencode models` içinde görünür.
 
 OpenRouter, `opencode.json` içinde isteğe bağlı sağlayıcı olarak tanımlı. Bağladıktan sonra `opencode models` çalıştırıp bir ajanı OpenRouter kimliğine yönlendirebilirsiniz.
 
 ## Gereksinimler
 
 - [OpenCode](https://opencode.ai) **2.x** önerilir (2.4.2 ile doğrulandı). OpenCode 1.19'da da subagent vardır ve `agent/` ile `agents/` klasörlerini görür; bu repo V2 frontmatter kullanır (`permissions` listesi, `temperature` / `tools` yok). Resmi tercih edilen yol: `.opencode/agents/` (çoğul).
-- Kimlik bilgileri `opencode auth login` **veya** `opencode.json` içindeki `{env:ZAI_API_KEY}`, `{env:NVIDIA_API_KEY}`, `{env:OPENROUTER_API_KEY}` ortam değişkenleri. Gerçek anahtarları asla commit etmeyin.
+- Kimlik bilgileri `opencode auth login` **veya** ortam değişkenleri: Coding Plan için resmi ad `ZHIPU_API_KEY` (yedek `ZAI_API_KEY`), artı `opencode.json` içindeki `{env:NVIDIA_API_KEY}` ve `{env:OPENROUTER_API_KEY}`. Gerçek anahtarları asla commit etmeyin.
 
 ## Kurulum
 
@@ -62,7 +62,7 @@ Sonra sağlayıcıları bağlayıp OpenCode'u yeniden başlatın:
 ```bash
 cp .env.example .env   # yerelde doldurun, commit etmeyin
 # veya:
-opencode auth login    # Z.AI, NVIDIA, OpenCode, OpenRouter
+opencode auth login    # Z.AI Coding Plan seçin; gerekirse NVIDIA / OpenCode / OpenRouter
 ```
 
 Ana ajana örnek: *explorer subagent ile src/ dizinini haritala.*
@@ -79,9 +79,45 @@ mcp/                  Claude Code / Codex için isteğe bağlı MCP köprüsü
 docs/omp-role-mapping.md   omp rollerine önerilen hizalama (uygulanmadı)
 ```
 
-## İsteğe bağlı: Claude Code için MCP
+## Claude Code kurulumu (MCP köprüsü)
 
-OpenCode-native subagent'lar yalnızca OpenCode içinde çalışır. Ana ajan **Claude Code** veya **Codex** ise (örneğin Mac mini'de), `opencode run` üzerinden devreden MCP sunucusu hâlâ gerekir. Eski sunucunun sade bir portu — üstteki [opencode-delegate-mcp#1](https://github.com/mryesiller/opencode-delegate-mcp/pull/1) OpenCode 2.x uyumluluk düzeltmesi dahil — [`mcp/`](mcp/README.md) altındadır.
+OpenCode-native subagent'lar yalnızca OpenCode içinde çalışır. Ana ajan **Claude Code** veya **Codex** ise (örneğin Mac mini'de), bakımı süren MCP köprüsünü kullanın: [`mcp/`](mcp/README.md). Köprü `opencode run` çağırır ve varsayılan model `zai-coding-plan/glm-5.3`dır. [opencode-delegate-mcp#1](https://github.com/mryesiller/opencode-delegate-mcp/pull/1) OpenCode 2.x düzeltmesini içerir. Bu sunucu API anahtarı tutmaz — önce o makinede OpenCode'u bağlayın:
+
+```bash
+opencode auth login    # "Z.AI Coding Plan" seçin
+```
+
+Sunucuyu derleyin (Node 18+):
+
+```bash
+git clone https://github.com/mryesiller/opencode-delegate-subagents.git
+cd opencode-delegate-subagents/mcp
+npm install
+npm run build
+```
+
+Claude Code'a kaydedin (stdio, kullanıcı kapsamı). Yolu o makinedeki `mcp/dist/index.js` mutlak yoluyla değiştirin. Bu komuta API anahtarı **koymayın**:
+
+```bash
+claude mcp add --transport stdio --scope user opencode-delegate -- node /absolute/path/to/opencode-delegate-subagents/mcp/dist/index.js
+```
+
+Diskteki ayar dosyası (`~/.config/opencode-delegate/config.json`) camelCase kullanır. Dosya yoksa varsayılan zaten Coding Plan modelidir; açıkça yazmak için:
+
+```json
+{
+  "defaultModel": "zai-coding-plan/glm-5.3",
+  "opencodeBin": "opencode"
+}
+```
+
+Claude Code'u yeniden başlatın (veya `/mcp`).
+
+Güvenilen bir dizinde, Claude Code'dan hızlı test:
+
+> `list_models` aracını `zai-coding-plan` sağlayıcısıyla çalıştır. Sonra `delegate_task` ile `/tmp/opencode-delegate-smoke.txt` dosyasını oluştur; içeriği `hi` olsun.
+
+Model listesinde `zai-coding-plan/glm-5.3` görünmeli ve duman dosyası `/tmp` altında oluşmalıdır. Sonra o dosyayı silin. `delegate_task` bilinmeyen `--dir` bayrağıyla düşerse OpenCode 2.x ikilisi bu porttan eski bir sunucu kullanıyordur — bu repodan yeniden derleyin.
 
 ## Yapılandırma notları
 
